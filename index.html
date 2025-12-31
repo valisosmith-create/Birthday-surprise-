@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff85a2;
+            --soft-pink: #fff0f3;
+            --btn-color: #ff7495;
+        }
+
+        /* Full Screen Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--soft-pink);
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport for mobile browsers */
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* The main container now fills the whole screen on your Infinix */
+        .app-container {
+            width: 100%;
+            max-width: 500px; /* Keeps it looking good on tablets too */
+            height: 100%;
+            background: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .step {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 40px 25px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-family: 'Dancing Script', cursive; color: var(--primary-pink); font-size: 2.4rem; margin-bottom: 10px; }
+        p { color: #777; font-size: 1rem; line-height: 1.5; margin-bottom: 30px; }
+
+        .btn {
+            background: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 116, 149, 0.3);
+            transition: 0.2s;
+        }
+        .btn:active { transform: scale(0.95); }
+
+        /* --- Updated Cake Section --- */
+        .cake-box {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .cake-icon { font-size: 120px; z-index: 1; }
+
+        .cut-line {
+            position: absolute;
+            width: 85%;
+            height: 2px;
+            border-top: 3px dashed #ffd1dc;
+            top: 55%;
+            z-index: 2;
+        }
+
+        .drag-arrow {
+            position: absolute;
+            left: 0;
+            top: -24px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            cursor: grab;
+            z-index: 10;
+            touch-action: none; /* Crucial for mobile dragging */
+        }
+        .drag-arrow::after { content: '➔'; color: var(--primary-pink); font-weight: bold; font-size: 1.2rem; }
+
+        /* --- Cards Section --- */
+        .wish-grid { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+        .wish-card {
+            background: var(--soft-pink);
+            padding: 20px;
+            border-radius: 20px;
+            color: var(--primary-pink);
+            font-weight: 600;
+            border: 1px solid #ffdde4;
+            transition: 0.3s;
+        }
+        .revealed { background: var(--primary-pink); color: white; }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="step active" id="step1">
+        <div style="font-size: 80px; margin-bottom: 20px;">🐱</div>
+        <h1>Happy Birthday, Beautiful! 🎂</h1>
+        <p>I've created something special just for you. Ready to see?</p>
+        <button class="btn" onclick="nextStep(2)">Let's Gooo</button>
+    </div>
+
+    <div class="step" id="step2">
+        <h3>Cut Your Cake! 🍰</h3>
+        <p>Drag the arrow across to make your wish</p>
+        
+        <div class="cake-box">
+            <div class="cake-icon">🎂</div>
+            <div class="cut-line">
+                <div class="drag-arrow" id="dragArrow"></div>
+            </div>
+        </div>
+        
+        <p id="progressText">Progress: 0%</p>
+        
+        <div id="successArea" style="display: none; animation: fadeIn 0.5s ease;">
+            <p>✨ Perfect Cut! Now make a wish...</p>
+            <button class="btn" onclick="nextStep(3)">I've Made My Wish!</button>
+        </div>
+    </div>
+
+    <div class="step" id="step3">
+        <h3>Birthday Wishes 🎁</h3>
+        <p>Tap these special notes for you</p>
+        <div class="wish-grid">
+            <div class="wish-card" onclick="this.classList.toggle('revealed'); this.innerText='You are incredible! ❤️'">Tap to open</div>
+            <div class="wish-card" onclick="this.classList.toggle('revealed'); this.innerText='Stay happy always! 🌟'">Tap to open</div>
+            <div class="wish-card" onclick="this.classList.toggle('revealed'); this.innerText='You deserve the world! 💖'">Tap to open</div>
+        </div>
+        <button class="btn" style="margin-top: 30px;" onclick="nextStep(4)">Final Message</button>
+    </div>
+
+    <div class="step" id="step4">
+        <div style="font-size: 80px; margin-bottom: 10px;">💌</div>
+        <h1>Forever Yours</h1>
+        <p>Today and every day, you are my favorite person. Happy Birthday!</p>
+        <button class="btn" onclick="location.reload()">Seal with Love ❤️</button>
+    </div>
+</div>
+
+<script>
+    function nextStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + n).classList.add('active');
+    }
+
+    const arrow = document.getElementById('dragArrow');
+    const line = document.querySelector('.cut-line');
+    const progressText = document.getElementById('progressText');
+    const successArea = document.getElementById('successArea');
+
+    let dragging = false;
+
+    const start = () => dragging = true;
+    const end = () => dragging = false;
+
+    const move = (e) => {
+        if (!dragging) return;
+        const rect = line.getBoundingClientRect();
+        const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+        let pos = Math.round((x / rect.width) * 100);
+        
+        if (pos < 0) pos = 0;
+        if (pos > 100) pos = 100;
+
+        arrow.style.left = pos + '%';
+        progressText.innerText = `Progress: ${pos}%`;
+
+        if (pos === 100) {
+            dragging = false;
+            successArea.style.display = 'block';
+            progressText.style.display = 'none';
+        }
+    };
+
+    arrow.addEventListener('mousedown', start);
+    arrow.addEventListener('touchstart', start);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', move);
+    window.addEventListener('mouseup', end);
+    window.addEventListener('touchend', end);
+</script>
+
+</body>
+  </html>
+                                                                          
